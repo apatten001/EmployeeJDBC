@@ -7,7 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
+import java.util.Map;
+import java.util.Scanner;import java.util.stream.Collectors;
 
 public class EmployeeCreate {
 
@@ -85,7 +86,7 @@ public class EmployeeCreate {
 	}
 
 	public void insertMultipleEmployees(Connection connection) throws SQLException {
-		System.out.println(INSERT2TABLE);
+		// System.out.println(INSERT2TABLE);
 		// Step 1: Establishing a Connection
 		try {
 			List<Employee> empList = new ArrayList<>();
@@ -126,7 +127,7 @@ public class EmployeeCreate {
 	}
 
 	public void insertRecord(Connection connection) throws SQLException {
-		System.out.println(INSERT2TABLE);
+		   System.out.println(INSERT2TABLE);
 		// Step 1: Establishing a Connection
 		try {
 			// Step 2:Create a statement using connection object
@@ -162,7 +163,7 @@ public class EmployeeCreate {
 			// Step 2:Create a statement using connection object
 			PreparedStatement preparedStatement = connection.prepareStatement(QUERY);
 
-			System.out.println("Enter id: ");
+			System.out.println("Enter an employee id to search: ");
 			preparedStatement.setInt(1, sc.nextInt());
 
 			System.out.println(preparedStatement);
@@ -205,8 +206,9 @@ public class EmployeeCreate {
 				empList.add(emp);
 			}
 
-			// Retrieve names of employees over the age 55
-			empList.stream().filter(emp1 -> emp1.age > 55).map(empName -> empName.empName).forEach(System.out::println);
+			// Retrieve names and Id number employees
+			Map<Integer, String> list = empList.stream().collect(Collectors.toMap(emp -> emp.empId, emp -> emp.empName));
+			System.out.print(list);
 			;
 		} catch (SQLException e) {
 			H2JDBCUtils.printSQLException(e);
