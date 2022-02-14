@@ -1,0 +1,27 @@
+[main] DEBUG com.hcl.jbdc.Employee  - Hello this is a debug message
+  [main] INFO  com.hcl.jbdc.Employee  - Hello this is an info message
+  Hello this is a debug message
+Hello this is an info message
+Hello this is a debug message
+Hello this is an info message
+Hello this is a debug message
+Hello this is an info message
+Creating a new Employee table
+Creating a new Employee table
+Creating a new Employee table
+Could be an Input otput error
+createTable method called
+Creating a new Employee table
+Could be an Input otput error
+insertMultipleEmployees method called
+Inserting a list of employees into the Employee table
+Please enter one or more employees into the employee list
+createTable method called
+Creating a new Employee table
+Could be an Input otput error
+insertMultipleEmployees method called
+Inserting a list of employees into the Employee table
+Please enter one or more employees into the employee list
+selectAllRecord method called
+Record must be selected by id
+Please enter one id to search

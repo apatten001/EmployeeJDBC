@@ -1,6 +1,8 @@
 package com.hcl.jbdc;
 
+import java.io.IOException;
 import java.sql.Connection;
+import org.apache.log4j.Logger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,6 +15,7 @@ import java.util.Scanner;import java.util.stream.Collectors;
 public class EmployeeCreate {
 
 	Scanner sc = new Scanner(System.in);
+	static Logger log = Logger.getLogger(EmployeeCreate.class.getName());
 
 	/**
 	 * TABLE ATTRIBUTES EmpID,EmpName,DOB,Salary,Age
@@ -32,7 +35,7 @@ public class EmployeeCreate {
 
 	private static final String DELETERECORDBYEMPID = "DELETE FROM EMPLOYEE WHERE EmpId = ?;";
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException{
 
 		EmployeeCreate newEmployeeTable = new EmployeeCreate();
 		try (Connection connection = H2JDBCUtils.getConnection()) {
@@ -40,24 +43,43 @@ public class EmployeeCreate {
 			// Create table for H2JDBC
 			newEmployeeTable.createTable(connection);
 			System.out.println();
+			log.debug("createTable method called");
+			log.info("Creating a new Employee table");  
+			log.error("Could be an Input otput error");
 
 			// Insert multiple employees data into the database
 			newEmployeeTable.insertMultipleEmployees(connection);
 			System.out.println();
+			log.debug("insertMultipleEmployees method called");
+			log.info("Inserting a list of employees into the Employee table");  
+			log.error("Please enter one or more employees into the employee list");
 
 			// Select all the records
 			newEmployeeTable.selectAllRecord(connection);
 			System.out.println();
+			log.debug("selectAllRecord method called");
+			log.info("Record must be selected by id");  
+			log.error("Please enter one id to search");
 			newEmployeeTable.insertRecord(connection);
 			System.out.println();
+			log.debug("insertRecord method called");
+			log.info("Inserting an employee into the database");  
+			log.error("Please enter all values for the employee");
 			newEmployeeTable.selectRecord(connection);
 			System.out.println();
 			newEmployeeTable.updateRecord(connection);
 			System.out.println();
+			log.debug("updateRecord method called");
+			log.info("Updating a specified employee attribute into the database");  
+			log.error("Please enter all values  to update for the employee");
 			newEmployeeTable.selectAllRecord(connection);
 			System.out.println();
 			newEmployeeTable.deleteRecord(connection);
 			System.out.println();
+			
+			log.debug("deleteRecord method called");
+			log.info("deleting a specified employee by id from the database");  
+			log.error("Please enter a valid employee id");
 			newEmployeeTable.selectAllRecord(connection);
 
 		} catch (SQLException e) {
@@ -157,7 +179,7 @@ public class EmployeeCreate {
 	}
 
 	// selects a record based on a condition
-	public void selectRecord(Connection connection) throws SQLException {
+	public Employee selectRecord(Connection connection) throws SQLException {
 		try {
 
 			// Step 2:Create a statement using connection object
@@ -169,7 +191,8 @@ public class EmployeeCreate {
 			System.out.println(preparedStatement);
 			// Step 3: Execute the query or update query
 			ResultSet rs = preparedStatement.executeQuery();
-
+			
+			
 			// Step 4: Process the ResultSet object.
 			while (rs.next()) {
 				int empid = rs.getInt("Empid");
@@ -177,11 +200,15 @@ public class EmployeeCreate {
 				String dob = rs.getString("DOB");
 				int salary = rs.getInt("Salary");
 				int age = rs.getInt("Age");
+				Employee employee  = new Employee(empid,name,dob,salary, age);
 				System.out.println("[" + empid + "," + name + "," + dob + "," + salary + "," + age + "]");
+				return employee;
 			}
 		} catch (SQLException e) {
 			H2JDBCUtils.printSQLException(e);
 		}
+		
+		return new Employee();
 	}
 
 	// prints all the selected records
